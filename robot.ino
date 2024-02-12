@@ -24,7 +24,7 @@ Led flashing_led(LED_PIN);
 Motor motor_left(MOTOR_A_IN1_PIN, MOTOR_A_IN2_PIN);
 Motor motor_right(MOTOR_B_IN1_PIN, MOTOR_B_IN2_PIN);
 
-bool motors_on = false;
+bool motors_on = true;
 
 void setup() {
     pinMode(LED_SCL_PIN, OUTPUT);
@@ -54,7 +54,7 @@ void loop() {
         motor_right.set(Motor::State::OFF);
     }
 
-    if (motor_timer.fire()) {
-      motors_on = !motors_on;
-    }
+    // if (motor_timer.fire()) {
+    //     motors_on = !motors_on;
+    // }
 }

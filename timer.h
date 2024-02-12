@@ -13,6 +13,9 @@ public:
      * milliseconds. */
     Timer(int ms);
 
+    /** Changes the timer interval to `ms`. */
+    void set_interval(int new_ms);
+
     /** Returns `true` once the timer is ready to be fired. If called, the timer
      * resets for the next firing. */
     bool fire();
