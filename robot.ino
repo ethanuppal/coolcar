@@ -18,10 +18,13 @@
 #define MOTOR_B_IN2_PIN 11
 
 Timer blink_timer(500);
+Timer motor_timer(20);
 PullupSwitch pullup_switch(SWITCH_PIN);
 Led flashing_led(LED_PIN);
-Motor motor_a(MOTOR_A_IN1_PIN, MOTOR_A_IN2_PIN);
-Motor motor_b(MOTOR_B_IN1_PIN, MOTOR_B_IN2_PIN);
+Motor motor_left(MOTOR_A_IN1_PIN, MOTOR_A_IN2_PIN);
+Motor motor_right(MOTOR_B_IN1_PIN, MOTOR_B_IN2_PIN);
+
+bool motors_on = false;
 
 void setup() {
     pinMode(LED_SCL_PIN, OUTPUT);
@@ -29,8 +32,8 @@ void setup() {
 
     pullup_switch.configure();
     flashing_led.configure();
-    motor_a.configure();
-    motor_b.configure();
+    motor_left.configure();
+    motor_right.configure();
 
     // digitalWrite(LED_SCL_PIN, HIGH);
     // digitalWrite(LED_SDA_PIN, HIGH);
@@ -43,11 +46,15 @@ void loop() {
         flashing_led.set(!flashing_led.is_on());
     }
 
-    if (pullup_switch.is_on()) {
-        motor_a.set(Motor::State::FORWARD);
-        motor_b.set(Motor::State::FORWARD);
+    if (pullup_switch.is_on() && motors_on) {
+        motor_left.set(Motor::State::FORWARD);
+        motor_right.set(Motor::State::FORWARD);
     } else {
-        motor_a.set(Motor::State::OFF);
-        motor_b.set(Motor::State::OFF);
+        motor_left.set(Motor::State::OFF);
+        motor_right.set(Motor::State::OFF);
+    }
+
+    if (motor_timer.fire()) {
+      motors_on = !motors_on;
     }
 }
